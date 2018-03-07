@@ -10,6 +10,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.sourcepit.jd.client.ContainerListRequest;
+import org.sourcepit.jd.client.ContainerListResponse;
 import org.sourcepit.jd.client.DockerClient;
 import org.sourcepit.jd.client.SystemVersionResponse;
 
@@ -43,6 +45,17 @@ public class DefaultDockerClientTest
 	public void tearDown() throws Exception
 	{
 		httpClient.close();
+	}
+
+	@Test
+	public void testContainerList() throws Exception
+	{
+		ContainerListRequest request = new ContainerListRequest();
+		request.setAll(true);
+		request.setLimit(10);
+
+		ContainerListResponse response = dockerClient.containerList(request);
+		assertNotNull(response);
 	}
 
 	@Test
