@@ -12,6 +12,7 @@ public abstract class ErrorResponseException extends IOException
 
 	public ErrorResponseException(ErrorResponse errorResponse)
 	{
+		super(errorResponse.getMessage());
 		this.errorResponse = errorResponse;
 	}
 
