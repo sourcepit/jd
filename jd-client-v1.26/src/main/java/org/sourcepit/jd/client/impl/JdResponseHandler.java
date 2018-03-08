@@ -9,6 +9,8 @@ import org.apache.http.client.HttpResponseException;
 import org.apache.http.util.EntityUtils;
 import org.sourcepit.jd.client.model.ErrorResponse;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JdResponseHandler<T> extends JacksonResponseHandler<T>
@@ -49,7 +51,7 @@ public class JdResponseHandler<T> extends JacksonResponseHandler<T>
 			return deserialize(entity, responseType);
 		}
 
-		final ErrorResponse errorResponse = tryDeserialize(entity, ErrorResponse.class);
+		final ErrorResponse errorResponse = tryGetErrorResponse(entity);
 		if (errorResponse != null)
 		{
 			errorResponseHandler.handleErrorResponse(statusCode, errorResponse);
@@ -58,5 +60,19 @@ public class JdResponseHandler<T> extends JacksonResponseHandler<T>
 		EntityUtils.consume(entity);
 		final String msg = errorResponse == null ? statusLine.getReasonPhrase() : errorResponse.getMessage();
 		throw new HttpResponseException(statusCode, msg);
+	}
+
+	private ErrorResponse tryGetErrorResponse(HttpEntity entity) throws IOException
+	{
+		ErrorResponse errorResponse;
+		try
+		{
+			errorResponse = deserialize(entity, ErrorResponse.class, DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		}
+		catch (JsonProcessingException e)
+		{
+			errorResponse = null;
+		}
+		return errorResponse != null && errorResponse.getMessage() != null ? errorResponse : null;
 	}
 }

@@ -14,9 +14,10 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.util.EntityUtils;
 
 import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 
 public abstract class JacksonResponseHandler<T> implements ResponseHandler<T>
 {
@@ -37,30 +38,24 @@ public abstract class JacksonResponseHandler<T> implements ResponseHandler<T>
 	protected abstract T handleResponse(StatusLine statusLine, HttpEntity entity)
 			throws ClientProtocolException, IOException;
 
-	protected <R> R tryDeserialize(final HttpEntity entity, Class<R> type) throws IOException
-	{
-		try
-		{
-			return deserialize(entity, type);
-		}
-		catch (JsonProcessingException e)
-		{
-			return null;
-		}
-	}
-
-	protected <R> R deserialize(final HttpEntity entity, Class<R> type)
+	protected <R> R deserialize(HttpEntity entity, Class<R> type, DeserializationFeature... deserializationFeatures)
 			throws IOException, JsonParseException, JsonMappingException
 	{
+		ObjectReader objectReader = objectMapper.readerFor(type);
+		if (deserializationFeatures != null)
+		{
+			objectReader = objectReader.withFeatures(deserializationFeatures);
+		}
+
 		final ContentType contentType = ContentType.get(entity);
 		final Charset charset = contentType == null ? null : contentType.getCharset();
 		if (charset == null)
 		{
-			return objectMapper.readValue(entity.getContent(), type);
+			return objectReader.readValue(entity.getContent());
 		}
 		else
 		{
-			return objectMapper.readValue(new InputStreamReader(entity.getContent()), type);
+			return objectReader.readValue(new InputStreamReader(entity.getContent()));
 		}
 	}
 
