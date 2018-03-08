@@ -8,20 +8,30 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.sourcepit.jd.client.ContainerCreateRequest;
+import org.sourcepit.jd.client.ContainerCreateResponse;
 import org.sourcepit.jd.client.ContainerListRequest;
 import org.sourcepit.jd.client.ContainerListResponse;
 import org.sourcepit.jd.client.DockerClient;
 import org.sourcepit.jd.client.SystemVersionResponse;
 import org.sourcepit.jd.client.core.annotation.QueryParameter;
 import org.sourcepit.jd.client.error.BadParameterException;
+import org.sourcepit.jd.client.error.ConflictException;
+import org.sourcepit.jd.client.error.ImpossibleToAttachException;
+import org.sourcepit.jd.client.error.NoSuchContainerException;
 import org.sourcepit.jd.client.error.ServerErrorException;
 import org.sourcepit.jd.client.impl.JdResponseHandler.ErrorResponseHandler;
 import org.sourcepit.jd.client.model.ErrorResponse;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +41,8 @@ public class DefaultDockerClient implements DockerClient
 	private static final String API_VERSION = "v1.26";
 
 	private static final String[] PATH_CONTAINER_LIST = { "containers", "json" };
+
+	private static final String[] PATH_CONTAINER_CREATE = { "containers", "create" };
 
 	private static final String[] PATH_SYSTEM_VERSION = { "version" };
 
@@ -79,6 +91,59 @@ public class DefaultDockerClient implements DockerClient
 			}
 		};
 		return httpClient.execute(httpRequest, new JdResponseHandler<>(objectMapper, responseType, errorHandler));
+	}
+
+	@Override
+	public ContainerCreateResponse containerCreate(ContainerCreateRequest request) throws BadParameterException,
+			NoSuchContainerException, ImpossibleToAttachException, ConflictException, ServerErrorException, IOException
+	{
+		final Map<String, String> queryParams = new LinkedHashMap<>();
+		collectQueryParameters(request, queryParams);
+
+		final URI uri = genUri(PATH_CONTAINER_CREATE, queryParams);
+
+		final byte[] bytes;
+		try
+		{
+			bytes = objectMapper.writeValueAsBytes(request);
+		}
+		catch (JsonProcessingException e)
+		{
+			throw new IllegalStateException(e);
+		}
+
+		final HttpEntity httpEntity = new ByteArrayEntity(bytes, ContentType.APPLICATION_JSON);
+
+		final HttpPost httpRequest = new HttpPost(uri);
+		httpRequest.setEntity(httpEntity);
+
+		final ErrorResponseHandler errorHandler = new ErrorResponseHandler()
+		{
+			@Override
+			public void handleErrorResponse(int statusCode, ErrorResponse errorResponse)
+					throws ClientProtocolException, IOException
+			{
+				switch (statusCode)
+				{
+					case 400:
+						throw new BadParameterException(errorResponse);
+					case 404:
+						throw new NoSuchContainerException(errorResponse);
+					case 406:
+						throw new ImpossibleToAttachException(errorResponse);
+					case 409:
+						throw new ConflictException(errorResponse);
+					case 500:
+						throw new ServerErrorException(errorResponse);
+					default:
+						break;
+				}
+			}
+		};
+
+		final Class<ContainerCreateResponse> responseType = ContainerCreateResponse.class;
+
+		return httpClient.execute(httpRequest, new JdResponseHandler<>(objectMapper, 201, responseType, errorHandler));
 	}
 
 	@Override

@@ -10,6 +10,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.sourcepit.jd.client.ContainerCreateRequest;
+import org.sourcepit.jd.client.ContainerCreateResponse;
 import org.sourcepit.jd.client.ContainerListRequest;
 import org.sourcepit.jd.client.ContainerListResponse;
 import org.sourcepit.jd.client.DockerClient;
@@ -55,6 +57,17 @@ public class DefaultDockerClientTest
 		request.setLimit(10);
 
 		ContainerListResponse response = dockerClient.containerList(request);
+		assertNotNull(response);
+	}
+	
+	@Test
+	public void testContainerCreate() throws Exception
+	{
+		ContainerCreateRequest request = new ContainerCreateRequest();
+		request.setName("hans");
+		request.setImage("busybox");
+
+		ContainerCreateResponse response = dockerClient.containerCreate(request);
 		assertNotNull(response);
 	}
 
