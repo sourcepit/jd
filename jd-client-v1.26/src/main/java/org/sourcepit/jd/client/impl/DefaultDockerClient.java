@@ -222,8 +222,15 @@ public class DefaultDockerClient implements DockerClient
 					if (!params.containsKey(paramName))
 					{
 						final Object fieldValue = getFieldValue(field, bean);
-						final String paramValue = fieldValue == null ? null : toString(fieldValue);
-						params.put(paramName, paramValue);
+						if (fieldValue == null)
+						{
+							params.put(paramName, null);
+						}
+						else
+						{
+							params.put(paramName, toString(fieldValue));
+
+						}
 					}
 				}
 			}
