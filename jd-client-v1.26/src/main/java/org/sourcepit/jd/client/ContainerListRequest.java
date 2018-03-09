@@ -46,7 +46,8 @@ public class ContainerListRequest
 	 * <li><code>name=&lt;name&gt;</code> a container's name</li>
 	 * <li><code>network</code>=(<code>&lt;network id&gt;</code> or <code>&lt;network name&gt;</code>)</li>
 	 * <li><code>since</code>=(<code>&lt;container id&gt;</code> or <code>&lt;container name&gt;</code>)</li>
-	 * <li><code>status=</code>(<code>created</code>|<code>restarting</code>|<code>running</code>|<code>removing</code>|<code>paused</code>|<code>exited</code>|<code>dead</code>)</li>
+	 * <li><code>status=</code>(<code>created</code>|<code>restarting</code>|<code>running</code>|<code>removing</code>
+	 * |<code>paused</code>|<code>exited</code>|<code>dead</code>)</li>
 	 * <li><code>volume</code>=(<code>&lt;volume name&gt;</code> or <code>&lt;mount point destination&gt;</code>)</li>
 	 * </ul>
 	 */
