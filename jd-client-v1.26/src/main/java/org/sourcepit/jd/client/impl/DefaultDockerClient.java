@@ -117,29 +117,7 @@ public class DefaultDockerClient implements DockerClient
 		final HttpPost httpRequest = new HttpPost(uri);
 		httpRequest.setEntity(httpEntity);
 
-		final ErrorResponseHandler errorHandler = new ErrorResponseHandler()
-		{
-			@Override
-			public void handleErrorResponse(int statusCode, ErrorResponse errorResponse)
-					throws ClientProtocolException, IOException
-			{
-				switch (statusCode)
-				{
-					case 400:
-						throw new BadParameterException(errorResponse);
-					case 404:
-						throw new NoSuchContainerException(errorResponse);
-					case 406:
-						throw new ImpossibleToAttachException(errorResponse);
-					case 409:
-						throw new ConflictException(errorResponse);
-					case 500:
-						throw new ServerErrorException(errorResponse);
-					default:
-						break;
-				}
-			}
-		};
+		final ErrorResponseHandler errorHandler = new ContainerCreateErrorResponseHandler();
 
 		final Class<ContainerCreateResponse> responseType = ContainerCreateResponse.class;
 
