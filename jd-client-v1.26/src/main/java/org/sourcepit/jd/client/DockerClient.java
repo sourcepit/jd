@@ -1,3 +1,4 @@
+
 package org.sourcepit.jd.client;
 
 import java.io.IOException;
@@ -8,8 +9,7 @@ import org.sourcepit.jd.client.error.ImpossibleToAttachException;
 import org.sourcepit.jd.client.error.NoSuchContainerException;
 import org.sourcepit.jd.client.error.ServerErrorException;
 
-public interface DockerClient
-{
+public interface DockerClient {
 	ContainerListResponse containerList(ContainerListRequest request)
 			throws BadParameterException, ServerErrorException, IOException;
 

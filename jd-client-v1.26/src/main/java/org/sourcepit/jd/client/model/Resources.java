@@ -16,13 +16,13 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class Resources
-{
+public class Resources {
 	// # Applicable to all platforms
 
 	/**
 	 * 
-	 * An integer value representing this container's relative CPU weight versus other containers.</br>
+	 * An integer value representing this container's relative CPU weight versus
+	 * other containers.</br>
 	 * </br>
 	 * <i><b>Applicable to all platforms</b></i>
 	 */
@@ -42,8 +42,9 @@ public class Resources
 	// # Applicable to UNIX platforms
 
 	/**
-	 * Path to <code>cgroups</code> under which the container's <code>cgroup</code> is created. If the path is not
-	 * absolute, the path is considered to be relative to the <code>cgroups</code> path of the init process. Cgroups are
+	 * Path to <code>cgroups</code> under which the container's <code>cgroup</code>
+	 * is created. If the path is not absolute, the path is considered to be
+	 * relative to the <code>cgroups</code> path of the init process. Cgroups are
 	 * created if they do not already exist.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
@@ -69,8 +70,7 @@ public class Resources
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class BlkioWeightDevice
-	{
+	public static class BlkioWeightDevice {
 		@JsonProperty("Path")
 		private String path;
 
@@ -144,8 +144,8 @@ public class Resources
 	private Long cpuQuota;
 
 	/**
-	 * The length of a CPU real-time period in microseconds. Set to 0 to allocate no time allocated to real-time
-	 * tasks.</br>
+	 * The length of a CPU real-time period in microseconds. Set to 0 to allocate no
+	 * time allocated to real-time tasks.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -153,8 +153,8 @@ public class Resources
 	private Long cpuRealtimePeriod;
 
 	/**
-	 * The length of a CPU real-time runtime in microseconds. Set to 0 to allocate no time allocated to real-time
-	 * tasks.</br>
+	 * The length of a CPU real-time runtime in microseconds. Set to 0 to allocate
+	 * no time allocated to real-time tasks.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -162,7 +162,8 @@ public class Resources
 	private Long cpuRealtimeRuntime;
 
 	/**
-	 * CPUs in which to allow execution (e.g., <code>0-3</code>, <code>0,1</code>)</br>
+	 * CPUs in which to allow execution (e.g., <code>0-3</code>,
+	 * <code>0,1</code>)</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -170,7 +171,8 @@ public class Resources
 	private String cpusetCpus;
 
 	/**
-	 * Memory nodes (MEMs) in which to allow execution (0-3, 0,1). Only effective on NUMA systems.</br>
+	 * Memory nodes (MEMs) in which to allow execution (0-3, 0,1). Only effective on
+	 * NUMA systems.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -218,7 +220,8 @@ public class Resources
 	private Long memorySwap;
 
 	/**
-	 * Tune a container's memory swappiness behavior. Accepts an integer between 0 and 100.</br>
+	 * Tune a container's memory swappiness behavior. Accepts an integer between 0
+	 * and 100.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 * 
@@ -256,8 +259,7 @@ public class Resources
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class Ulimit
-	{
+	public static class Ulimit {
 		/**
 		 * Name of ulimit
 		 */
@@ -292,8 +294,9 @@ public class Resources
 	/**
 	 * The number of usable CPUs (Windows only).</br>
 	 * </br>
-	 * On Windows Server containers, the processor resource controls are mutually exclusive. The order of precedence is
-	 * <code>CPUCount</code> first, then <code>CPUShares</code>, and <code>CPUPercent</code> last.</br>
+	 * On Windows Server containers, the processor resource controls are mutually
+	 * exclusive. The order of precedence is <code>CPUCount</code> first, then
+	 * <code>CPUShares</code>, and <code>CPUPercent</code> last.</br>
 	 * </br>
 	 * <i><b>Applicable to Windows</b></i>
 	 */
@@ -303,8 +306,9 @@ public class Resources
 	/**
 	 * The usable percentage of the available CPUs (Windows only).</br>
 	 * </br>
-	 * On Windows Server containers, the processor resource controls are mutually exclusive. The order of precedence is
-	 * <code>CPUCount</code> first, then <code>CPUShares</code>, and <code>CPUPercent</code> last.</br>
+	 * On Windows Server containers, the processor resource controls are mutually
+	 * exclusive. The order of precedence is <code>CPUCount</code> first, then
+	 * <code>CPUShares</code>, and <code>CPUPercent</code> last.</br>
 	 * </br>
 	 * <i><b>Applicable to Windows</b></i>
 	 */
@@ -320,7 +324,8 @@ public class Resources
 	private Long ioMaximumIOps;
 
 	/**
-	 * Maximum IO in bytes per second for the container system drive (Windows only)</br>
+	 * Maximum IO in bytes per second for the container system drive (Windows
+	 * only)</br>
 	 * </br>
 	 * <i><b>Applicable to Windows</b></i>
 	 */

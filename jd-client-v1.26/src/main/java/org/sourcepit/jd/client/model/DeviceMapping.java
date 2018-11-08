@@ -11,8 +11,7 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class DeviceMapping
-{
+public class DeviceMapping {
 	@JsonProperty("PathOnHost")
 	private String pathOnHost;
 

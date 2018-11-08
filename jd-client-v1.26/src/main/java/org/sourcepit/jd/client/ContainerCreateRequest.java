@@ -24,10 +24,10 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(Include.NON_NULL)
-public class ContainerCreateRequest extends Config
-{
+public class ContainerCreateRequest extends Config {
 	/**
-	 * Assign the specified name to the container. Must match <code>/?[a-zA-Z0-9_-]+</code>.
+	 * Assign the specified name to the container. Must match
+	 * <code>/?[a-zA-Z0-9_-]+</code>.
 	 */
 	@QueryParameter
 	@Pattern(regexp = "/?[a-zA-Z0-9_-]+")
@@ -40,8 +40,7 @@ public class ContainerCreateRequest extends Config
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class NetworkingConfig
-	{
+	public static class NetworkingConfig {
 		/**
 		 * A mapping of network name to endpoint configuration for that network.
 		 */

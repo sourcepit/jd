@@ -20,21 +20,25 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @JsonInclude(Include.NON_NULL)
-public class HostConfig extends Resources
-{
+public class HostConfig extends Resources {
 	// # Applicable to all platforms
 
 	/**
-	 * A list of volume bindings for this container. Each volume binding is a string in one of these forms:
+	 * A list of volume bindings for this container. Each volume binding is a string
+	 * in one of these forms:
 	 * <ul>
-	 * <li><code>host-src:container-dest</code> to bind-mount a host path into the container. Both
-	 * <code>host-src</code>, and <code>container-dest</code> must be an <i>absolute</i> path.</li>
-	 * <li><code>host-src:container-dest:ro</code> to make the bind-mount read-only inside the container. Both
-	 * <code>host-src</code>, and <code>container-dest</code> must be an <i>absolute</i> path.</li>
-	 * <li><code>volume-name:container-dest</code> to bind-mount a volume managed by a volume driver into the container.
+	 * <li><code>host-src:container-dest</code> to bind-mount a host path into the
+	 * container. Both <code>host-src</code>, and <code>container-dest</code> must
+	 * be an <i>absolute</i> path.</li>
+	 * <li><code>host-src:container-dest:ro</code> to make the bind-mount read-only
+	 * inside the container. Both <code>host-src</code>, and
 	 * <code>container-dest</code> must be an <i>absolute</i> path.</li>
-	 * <li><code>volume-name:container-dest:ro</code> to mount the volume read-only inside the container.
-	 * <code>container-dest</code> must be an <i>absolute</i> path.</li>
+	 * <li><code>volume-name:container-dest</code> to bind-mount a volume managed by
+	 * a volume driver into the container. <code>container-dest</code> must be an
+	 * <i>absolute</i> path.</li>
+	 * <li><code>volume-name:container-dest:ro</code> to mount the volume read-only
+	 * inside the container. <code>container-dest</code> must be an <i>absolute</i>
+	 * path.</li>
 	 * </ul>
 	 * </br>
 	 * </br>
@@ -53,30 +57,19 @@ public class HostConfig extends Resources
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class LogConfig
-	{
-		public static enum Type
-		{
-			JSON_FILE("json-file"),
-			SYSLOG("syslog"),
-			JOURNALD("journald"),
-			GELF("gelf"),
-			FLUENTD("fluentd"),
-			AWSLOGS("awslogs"),
-			SPLUNK("splunk"),
-			ETWLOGS("etwlogs"),
-			NONE("none");
+	public static class LogConfig {
+		public static enum Type {
+			JSON_FILE("json-file"), SYSLOG("syslog"), JOURNALD("journald"), GELF("gelf"), FLUENTD("fluentd"),
+			AWSLOGS("awslogs"), SPLUNK("splunk"), ETWLOGS("etwlogs"), NONE("none");
 
 			private final String literal;
 
-			private Type(String literal)
-			{
+			private Type(String literal) {
 				this.literal = literal;
 			}
 
 			@JsonValue
-			public String getLiteral()
-			{
+			public String getLiteral() {
 				return literal;
 			}
 		}
@@ -97,9 +90,10 @@ public class HostConfig extends Resources
 	private LogConfig logConfig;
 
 	/**
-	 * Network mode to use for this container. Supported standard values are: <code>bridge</code>, <code>host</code>,
-	 * <code>none</code>, and <code>container:&lt;name|id&gt;</code>. Any other value is taken as a custom network's
-	 * name to which this container should connect to.</br>
+	 * Network mode to use for this container. Supported standard values are:
+	 * <code>bridge</code>, <code>host</code>, <code>none</code>, and
+	 * <code>container:&lt;name|id&gt;</code>. Any other value is taken as a custom
+	 * network's name to which this container should connect to.</br>
 	 * </br>
 	 * <i><b>Applicable to all platforms</b></i>
 	 */
@@ -108,8 +102,7 @@ public class HostConfig extends Resources
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class HostPort
-	{
+	public static class HostPort {
 		/**
 		 * The host IP address
 		 */
@@ -138,8 +131,8 @@ public class HostConfig extends Resources
 	private RestartPolicy restartPolicy;
 
 	/**
-	 * Automatically remove the container when the container's process exits. This has no effect if
-	 * <code>RestartPolicy</code> is set.</br>
+	 * Automatically remove the container when the container's process exits. This
+	 * has no effect if <code>RestartPolicy</code> is set.</br>
 	 * </br>
 	 * <i><b>Applicable to all platforms</b></i>
 	 */
@@ -155,8 +148,8 @@ public class HostConfig extends Resources
 	private String volumeDriver;
 
 	/**
-	 * A list of volumes to inherit from another container, specified in the form <code>&lt;container
-	 * name&gt;[:&lt;ro|rw&gt;]<code>.</br>
+	 * A list of volumes to inherit from another container, specified in the form
+	 * <code>&lt;container name&gt;[:&lt;ro|rw&gt;]<code>.</br>
 	 * </br>
 	 * <i><b>Applicable to all platforms</b></i>
 	 */
@@ -215,7 +208,8 @@ public class HostConfig extends Resources
 	private List<String> dnsSearch;
 
 	/**
-	 * A list of hostnames/IP mappings to add to the container's <code>/etc/hosts</code> file. Specified in the form
+	 * A list of hostnames/IP mappings to add to the container's
+	 * <code>/etc/hosts</code> file. Specified in the form
 	 * <code>["hostname:IP"]</code>.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
@@ -248,7 +242,8 @@ public class HostConfig extends Resources
 	private String cGroup;
 
 	/**
-	 * A list of links for the container in the form <code>container_name:alias</code>.</br>
+	 * A list of links for the container in the form
+	 * <code>container_name:alias</code>.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -256,7 +251,8 @@ public class HostConfig extends Resources
 	private List<String> links;
 
 	/**
-	 * An integer value containing the score given to the container in order to tune OOM killer preferences.</br>
+	 * An integer value containing the score given to the container in order to tune
+	 * OOM killer preferences.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -266,8 +262,10 @@ public class HostConfig extends Resources
 	/**
 	 * Set the PID (Process) Namespace mode for the container. It can be either:
 	 * <ul>
-	 * <li><code>"container:&lt;name|id&gt;"<code>: joins another container's PID namespace</li>
-	 * <li><code>"host"<code>: use the host's PID namespace inside the container</li>
+	 * <li><code>"container:&lt;name|id&gt;"<code>: joins another container's PID
+	 * namespace</li>
+	 * <li><code>"host"<code>: use the host's PID namespace inside the
+	 * container</li>
 	 * </ul>
 	 * </br>
 	 * </br>
@@ -301,7 +299,8 @@ public class HostConfig extends Resources
 	private Boolean readonlyRootfs;
 
 	/**
-	 * A list of string values to customize labels for MLS systems, such as SELinux.</br>
+	 * A list of string values to customize labels for MLS systems, such as
+	 * SELinux.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -309,7 +308,8 @@ public class HostConfig extends Resources
 	private List<String> securityOpt;
 
 	/**
-	 * Storage driver options for this container, in the form <code>{"size": "120G"}</code>.</br>
+	 * Storage driver options for this container, in the form
+	 * <code>{"size": "120G"}</code>.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -317,8 +317,9 @@ public class HostConfig extends Resources
 	private Map<String, String> storageOpt;
 
 	/**
-	 * A map of container directories which should be replaced by tmpfs mounts, and their corresponding mount options.
-	 * For example: <code>{ "/run": "rw,noexec,nosuid,size=65536k" }</code>.</br>
+	 * A map of container directories which should be replaced by tmpfs mounts, and
+	 * their corresponding mount options. For example:
+	 * <code>{ "/run": "rw,noexec,nosuid,size=65536k" }</code>.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -334,7 +335,8 @@ public class HostConfig extends Resources
 	private String utsMode;
 
 	/**
-	 * Sets the usernamespace mode for the container when usernamespace remapping option is enabled.</br>
+	 * Sets the usernamespace mode for the container when usernamespace remapping
+	 * option is enabled.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 */
@@ -342,7 +344,8 @@ public class HostConfig extends Resources
 	private String usernsMode;
 
 	/**
-	 * Size of <code>/dev/shm</code> in bytes. If omitted, the system uses 64MB.</br>
+	 * Size of <code>/dev/shm</code> in bytes. If omitted, the system uses
+	 * 64MB.</br>
 	 * </br>
 	 * <i><b>Applicable to UNIX platforms</b></i>
 	 * 
@@ -383,22 +386,17 @@ public class HostConfig extends Resources
 	@Size(min = 2, max = 2)
 	private List<Integer> consoleSize;
 
-	public static enum Isolation
-	{
-		DEFAULT("default"),
-		PROCESS("process"),
-		HYPERV("hyperv");
+	public static enum Isolation {
+		DEFAULT("default"), PROCESS("process"), HYPERV("hyperv");
 
 		private final String literal;
 
-		private Isolation(String literal)
-		{
+		private Isolation(String literal) {
 			this.literal = literal;
 		}
 
 		@JsonValue
-		public String getLiteral()
-		{
+		public String getLiteral() {
 			return literal;
 		}
 	}

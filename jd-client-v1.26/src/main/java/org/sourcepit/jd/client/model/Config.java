@@ -16,11 +16,9 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class Config
-{
+public class Config {
 	@Data
-	public static class EmptyObject
-	{
+	public static class EmptyObject {
 	}
 
 	/**
@@ -66,13 +64,15 @@ public class Config
 	private Boolean attachStderr;
 
 	/**
-	 * An object mapping ports to an empty object in the form: <code>{"&lt;port&gt/&lt;tcp|udp&gt": {}}</code>
+	 * An object mapping ports to an empty object in the form:
+	 * <code>{"&lt;port&gt/&lt;tcp|udp&gt": {}}</code>
 	 */
 	@JsonProperty("ExposedPorts")
 	private Map<String, EmptyObject> exposedPorts;
 
 	/**
-	 * Attach standard streams to a TTY, including <code>stdin</code> if it is not closed.
+	 * Attach standard streams to a TTY, including <code>stdin</code> if it is not
+	 * closed.
 	 * 
 	 * @default false
 	 */
@@ -96,7 +96,8 @@ public class Config
 	private Boolean stdinOnce;
 
 	/**
-	 * A list of environment variables to set inside the container in the form <code>["VAR=value", ...]</code>
+	 * A list of environment variables to set inside the container in the form
+	 * <code>["VAR=value", ...]</code>
 	 */
 	@JsonProperty("Env")
 	private List<String> env;
@@ -142,8 +143,9 @@ public class Config
 	/**
 	 * The entry point for the container as a string or an array of strings. </br>
 	 * </br>
-	 * If the array consists of exactly one empty string (<code>[""]</code>) then the entry point is reset to system
-	 * default (i.e., the entry point used by docker when there is no <code>ENTRYPOINT</code> instruction in the
+	 * If the array consists of exactly one empty string (<code>[""]</code>) then
+	 * the entry point is reset to system default (i.e., the entry point used by
+	 * docker when there is no <code>ENTRYPOINT</code> instruction in the
 	 * <code>Dockerfile</code>).
 	 */
 	@JsonProperty("Entrypoint")
@@ -164,7 +166,8 @@ public class Config
 	private String macAddress;
 
 	/**
-	 * <code>ONBUILD</code> metadata that were defined in the image's <code>Dockerfile</code>.
+	 * <code>ONBUILD</code> metadata that were defined in the image's
+	 * <code>Dockerfile</code>.
 	 */
 	@JsonProperty("OnBuild")
 	private List<String> onBuild;
@@ -192,7 +195,8 @@ public class Config
 	private Integer stopTimeout;
 
 	/**
-	 * Shell for when <code>RUN</code>, <code>CMD</code>, and <code>ENTRYPOINT</code> uses a shell.
+	 * Shell for when <code>RUN</code>, <code>CMD</code>, and
+	 * <code>ENTRYPOINT</code> uses a shell.
 	 */
 	@JsonProperty("Shell")
 	private String shell;

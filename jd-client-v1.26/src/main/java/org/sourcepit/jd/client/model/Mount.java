@@ -11,8 +11,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class Mount
-{
+public class Mount {
 	/**
 	 * Container path.
 	 */
@@ -25,34 +24,34 @@ public class Mount
 	@JsonProperty("Source")
 	private String source;
 
-	public static enum Type
-	{
+	public static enum Type {
 		/**
-		 * Mounts a file or directory from the host into the container. Must exist prior to creating the container.
+		 * Mounts a file or directory from the host into the container. Must exist prior
+		 * to creating the container.
 		 */
 		BIND("bind"),
 
 		/**
-		 * Creates a volume with the given name and options (or uses a pre-existing volume with the same name and
-		 * options). These are <b>not</b> removed when the container is removed.
+		 * Creates a volume with the given name and options (or uses a pre-existing
+		 * volume with the same name and options). These are <b>not</b> removed when the
+		 * container is removed.
 		 */
 		VOLUME("volume"),
 
 		/**
-		 * Create a tmpfs with the given options. The mount source cannot be specified for tmpfs.
+		 * Create a tmpfs with the given options. The mount source cannot be specified
+		 * for tmpfs.
 		 */
 		TMPFS("tmpfs");
 
 		private final String literal;
 
-		private Type(String literal)
-		{
+		private Type(String literal) {
 			this.literal = literal;
 		}
 
 		@JsonValue
-		public String getLiteral()
-		{
+		public String getLiteral() {
 			return literal;
 		}
 	}
@@ -71,33 +70,26 @@ public class Mount
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class BindOptions
-	{
-		public enum Propagation
-		{
-			PRIVATE("private"),
-			RPRIVATE("rprivate"),
-			SHARED("shared"),
-			RSHARED("rshared"),
-			SLAVE("slave"),
+	public static class BindOptions {
+		public enum Propagation {
+			PRIVATE("private"), RPRIVATE("rprivate"), SHARED("shared"), RSHARED("rshared"), SLAVE("slave"),
 			RSLAVE("rslave");
 
 			private final String literal;
 
-			private Propagation(String literal)
-			{
+			private Propagation(String literal) {
 				this.literal = literal;
 			}
 
 			@JsonValue
-			public String getLiteral()
-			{
+			public String getLiteral() {
 				return literal;
 			}
 		}
 
 		/**
-		 * A propagation mode with the value <code>[r]private</code>, <code>[r]shared</code>, or <code>[r]slave</code>.
+		 * A propagation mode with the value <code>[r]private</code>,
+		 * <code>[r]shared</code>, or <code>[r]slave</code>.
 		 */
 		@JsonProperty("Propagation")
 		private Propagation Propagation;
@@ -111,8 +103,7 @@ public class Mount
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class VolumeOptions
-	{
+	public static class VolumeOptions {
 		/**
 		 * Populate volume with data from the target.
 		 * 
@@ -129,8 +120,7 @@ public class Mount
 
 		@Data
 		@JsonInclude(Include.NON_NULL)
-		public static class DriverConfig
-		{
+		public static class DriverConfig {
 			/**
 			 * Name of the driver to use to create the volume.
 			 */
@@ -159,8 +149,7 @@ public class Mount
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class TmpfsOptions
-	{
+	public static class TmpfsOptions {
 		/**
 		 * The size for the tmpfs mount in bytes.
 		 */

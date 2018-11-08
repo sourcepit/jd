@@ -25,43 +25,37 @@ import lombok.Data;
 // items:
 // type: "string"
 @Data
-public class StringOrStringList
-{
+public class StringOrStringList {
 
 	private List<String> values;
 
 	private String value;
 
-	public static class Deserializer extends JsonDeserializer<StringOrStringList>
-	{
+	public static class Deserializer extends JsonDeserializer<StringOrStringList> {
 
 		@Override
 		public StringOrStringList deserialize(JsonParser p, DeserializationContext ctxt)
-				throws IOException, JsonProcessingException
-		{
+				throws IOException, JsonProcessingException {
 			String value = null;
 			List<String> values = null;
-			switch (p.getCurrentTokenId())
-			{
-				case JsonTokenId.ID_STRING:
-					value = p.getValueAsString();
-					break;
-				case JsonTokenId.ID_START_ARRAY:
-					values = new ArrayList<>();
+			switch (p.getCurrentTokenId()) {
+			case JsonTokenId.ID_STRING:
+				value = p.getValueAsString();
+				break;
+			case JsonTokenId.ID_START_ARRAY:
+				values = new ArrayList<>();
+				p.nextToken();
+				while (p.getCurrentTokenId() == JsonTokenId.ID_STRING) {
+					values.add(p.getValueAsString());
 					p.nextToken();
-					while (p.getCurrentTokenId() == JsonTokenId.ID_STRING)
-					{
-						values.add(p.getValueAsString());
-						p.nextToken();
-					}
+				}
 
-					if (p.getCurrentTokenId() != JsonTokenId.ID_END_ARRAY)
-					{
-						throw new JsonParseException(p, "Expected end of array");
-					}
-					break;
-				default:
-					throw new JsonParseException(p, "Expected string or start of array");
+				if (p.getCurrentTokenId() != JsonTokenId.ID_END_ARRAY) {
+					throw new JsonParseException(p, "Expected end of array");
+				}
+				break;
+			default:
+				throw new JsonParseException(p, "Expected string or start of array");
 			}
 
 			final StringOrStringList result = new StringOrStringList();
@@ -72,35 +66,28 @@ public class StringOrStringList
 
 	}
 
-	public static class Serializer extends JsonSerializer<StringOrStringList>
-	{
+	public static class Serializer extends JsonSerializer<StringOrStringList> {
 		@Override
 		public void serialize(StringOrStringList union, JsonGenerator gen, SerializerProvider serializers)
-				throws IOException, JsonProcessingException
-		{
+				throws IOException, JsonProcessingException {
 			final String value = union.getValue();
 			final List<String> values = union.getValues();
 
-			if (value == null && values == null)
-			{
+			if (value == null && values == null) {
 				throw new JsonGenerationException("One of value or values must be set", null, gen);
 			}
 
-			if (value != null && values != null)
-			{
+			if (value != null && values != null) {
 				throw new JsonGenerationException("Only one of value or values must be set", null, gen);
 			}
 
-			if (value != null)
-			{
+			if (value != null) {
 				gen.writeString(value);
 			}
 
-			if (values != null)
-			{
+			if (values != null) {
 				gen.writeStartArray();
-				for (String string : values)
-				{
+				for (String string : values) {
 					gen.writeString(string);
 				}
 				gen.writeEndArray();

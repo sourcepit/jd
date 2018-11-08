@@ -17,17 +17,12 @@ import org.sourcepit.jd.client.ContainerListResponse;
 import org.sourcepit.jd.client.DockerClient;
 import org.sourcepit.jd.client.SystemVersionResponse;
 
-public class DefaultDockerClientTest
-{
+public class DefaultDockerClientTest {
 	private final static URI DOCKER_HOST_URI;
-	static
-	{
-		try
-		{
+	static {
+		try {
 			DOCKER_HOST_URI = new URI("http://192.168.56.31:2375");
-		}
-		catch (URISyntaxException e)
-		{
+		} catch (URISyntaxException e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -37,21 +32,18 @@ public class DefaultDockerClientTest
 	private DockerClient dockerClient;
 
 	@Before
-	public void setUp()
-	{
+	public void setUp() {
 		httpClient = HttpClients.createDefault();
 		dockerClient = new DefaultDockerClient(httpClient, DOCKER_HOST_URI);
 	}
 
 	@After
-	public void tearDown() throws Exception
-	{
+	public void tearDown() throws Exception {
 		httpClient.close();
 	}
 
 	@Test
-	public void testContainerList() throws Exception
-	{
+	public void testContainerList() throws Exception {
 		ContainerListRequest request = new ContainerListRequest();
 		request.setAll(true);
 		request.setLimit(10);
@@ -59,10 +51,9 @@ public class DefaultDockerClientTest
 		ContainerListResponse response = dockerClient.containerList(request);
 		assertNotNull(response);
 	}
-	
+
 	@Test
-	public void testContainerCreate() throws Exception
-	{
+	public void testContainerCreate() throws Exception {
 		ContainerCreateRequest request = new ContainerCreateRequest();
 		request.setName("hans");
 		request.setImage("busybox");
@@ -72,8 +63,7 @@ public class DefaultDockerClientTest
 	}
 
 	@Test
-	public void test() throws Exception
-	{
+	public void test() throws Exception {
 		SystemVersionResponse response = dockerClient.systemVersion();
 		assertNotNull(response);
 	}

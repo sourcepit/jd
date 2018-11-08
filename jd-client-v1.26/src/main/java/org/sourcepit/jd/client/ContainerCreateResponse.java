@@ -15,8 +15,7 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class ContainerCreateResponse
-{
+public class ContainerCreateResponse {
 	/**
 	 * The ID of the created container
 	 */

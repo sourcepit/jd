@@ -13,10 +13,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JdResponseHandler<T> extends JacksonResponseHandler<T>
-{
-	public interface ErrorResponseHandler
-	{
+public class JdResponseHandler<T> extends JacksonResponseHandler<T> {
+	public interface ErrorResponseHandler {
 		void handleErrorResponse(int statusCode, ErrorResponse errorResponse)
 				throws ClientProtocolException, IOException;
 	}
@@ -28,14 +26,12 @@ public class JdResponseHandler<T> extends JacksonResponseHandler<T>
 	private final ErrorResponseHandler errorResponseHandler;
 
 	public JdResponseHandler(ObjectMapper objectMapper, Class<T> responseType,
-			ErrorResponseHandler errorResponseHandler)
-	{
+			ErrorResponseHandler errorResponseHandler) {
 		this(objectMapper, 200, responseType, errorResponseHandler);
 	}
 
 	public JdResponseHandler(ObjectMapper objectMapper, int codeOk, Class<T> responseType,
-			ErrorResponseHandler errorResponseHandler)
-	{
+			ErrorResponseHandler errorResponseHandler) {
 		super(objectMapper);
 		this.codeOk = codeOk;
 		this.responseType = responseType;
@@ -43,17 +39,14 @@ public class JdResponseHandler<T> extends JacksonResponseHandler<T>
 	}
 
 	@Override
-	protected T handleResponse(StatusLine statusLine, HttpEntity entity) throws ClientProtocolException, IOException
-	{
+	protected T handleResponse(StatusLine statusLine, HttpEntity entity) throws ClientProtocolException, IOException {
 		final int statusCode = statusLine.getStatusCode();
-		if (statusCode == codeOk)
-		{
+		if (statusCode == codeOk) {
 			return deserialize(entity, responseType);
 		}
 
 		final ErrorResponse errorResponse = tryGetErrorResponse(entity);
-		if (errorResponse != null)
-		{
+		if (errorResponse != null) {
 			errorResponseHandler.handleErrorResponse(statusCode, errorResponse);
 		}
 
@@ -62,15 +55,11 @@ public class JdResponseHandler<T> extends JacksonResponseHandler<T>
 		throw new HttpResponseException(statusCode, msg);
 	}
 
-	private ErrorResponse tryGetErrorResponse(HttpEntity entity) throws IOException
-	{
+	private ErrorResponse tryGetErrorResponse(HttpEntity entity) throws IOException {
 		ErrorResponse errorResponse;
-		try
-		{
+		try {
 			errorResponse = deserialize(entity, ErrorResponse.class, DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		}
-		catch (JsonProcessingException e)
-		{
+		} catch (JsonProcessingException e) {
 			errorResponse = null;
 		}
 		return errorResponse != null && errorResponse.getMessage() != null ? errorResponse : null;

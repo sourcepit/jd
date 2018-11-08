@@ -8,8 +8,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class SystemVersionResponse
-{
+public class SystemVersionResponse {
 	@JsonProperty("Version")
 	private String version;
 

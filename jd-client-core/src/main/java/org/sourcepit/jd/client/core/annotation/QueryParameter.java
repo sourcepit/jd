@@ -8,7 +8,6 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target(FIELD)
-public @interface QueryParameter
-{
+public @interface QueryParameter {
 
 }

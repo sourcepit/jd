@@ -13,12 +13,10 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class EndpointSettings
-{
+public class EndpointSettings {
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class IPAMConfig
-	{
+	public static class IPAMConfig {
 		@JsonProperty("IPv4Address")
 		private String ipv4Address;
 

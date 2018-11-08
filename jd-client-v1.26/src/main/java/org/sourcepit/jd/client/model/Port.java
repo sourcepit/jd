@@ -12,8 +12,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class Port
-{
+public class Port {
 	@JsonProperty(value = "ID")
 	private String ip;
 
@@ -33,21 +32,17 @@ public class Port
 	@Min(0)
 	private Integer publicPort;
 
-	public static enum Type
-	{
-		TCP("tcp"),
-		UDP("udp");
+	public static enum Type {
+		TCP("tcp"), UDP("udp");
 
 		private final String literal;
 
-		private Type(String value)
-		{
+		private Type(String value) {
 			this.literal = value;
 		}
 
 		@JsonValue
-		public String getLiteral()
-		{
+		public String getLiteral() {
 			return literal;
 		}
 	}

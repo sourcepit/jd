@@ -12,8 +12,7 @@ import lombok.Data;
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class HealthConfig
-{
+public class HealthConfig {
 	// Test:
 	// description: |
 	// The test to perform. Possible values are:

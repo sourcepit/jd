@@ -8,17 +8,16 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Data;
 
 /**
- * The behavior to apply when the container exits. The default is not to restart.</br>
+ * The behavior to apply when the container exits. The default is not to
+ * restart.</br>
  * </br>
- * An ever increasing delay (double the previous delay, starting at 100ms) is added before each restart to prevent
- * flooding the server.
+ * An ever increasing delay (double the previous delay, starting at 100ms) is
+ * added before each restart to prevent flooding the server.
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class RestartPolicy
-{
-	public static enum Name
-	{
+public class RestartPolicy {
+	public static enum Name {
 		/**
 		 * Always restart
 		 */
@@ -34,14 +33,12 @@ public class RestartPolicy
 
 		private final String literal;
 
-		private Name(String literal)
-		{
+		private Name(String literal) {
 			this.literal = literal;
 		}
 
 		@JsonValue
-		public String getLiteral()
-		{
+		public String getLiteral() {
 			return literal;
 		}
 	}
@@ -50,7 +47,8 @@ public class RestartPolicy
 	private Name name;
 
 	/**
-	 * If <code>on-failure</code> is used, the number of times to retry before giving up
+	 * If <code>on-failure</code> is used, the number of times to retry before
+	 * giving up
 	 */
 	@JsonProperty("MaximumRetryCount")
 	private Integer maximumRetryCount;

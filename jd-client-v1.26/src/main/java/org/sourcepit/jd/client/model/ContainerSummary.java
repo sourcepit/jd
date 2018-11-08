@@ -11,8 +11,7 @@ import lombok.Data;
 
 @Data
 @JsonInclude(Include.NON_NULL)
-public class ContainerSummary
-{
+public class ContainerSummary {
 	/**
 	 * The ID of this container
 	 */
@@ -87,8 +86,7 @@ public class ContainerSummary
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	public static class HostConfig
-	{
+	public static class HostConfig {
 		@JsonProperty("NetworkMode")
 		private String networkMode;
 	}
@@ -98,8 +96,7 @@ public class ContainerSummary
 
 	@Data
 	@JsonInclude(Include.NON_NULL)
-	private static class NetworkSettings
-	{
+	private static class NetworkSettings {
 		@JsonProperty("Networks")
 		private Map<String, EndpointSettings> networks;
 	}
