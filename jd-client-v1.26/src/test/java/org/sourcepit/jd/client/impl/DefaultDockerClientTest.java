@@ -12,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sourcepit.jd.client.ContainerCreateRequest;
 import org.sourcepit.jd.client.ContainerCreateResponse;
+import org.sourcepit.jd.client.ContainerInspectRequest;
+import org.sourcepit.jd.client.ContainerInspectResponse;
 import org.sourcepit.jd.client.ContainerListRequest;
 import org.sourcepit.jd.client.ContainerListResponse;
 import org.sourcepit.jd.client.DockerClient;
@@ -21,7 +23,7 @@ public class DefaultDockerClientTest {
 	private final static URI DOCKER_HOST_URI;
 	static {
 		try {
-			DOCKER_HOST_URI = new URI("http://192.168.56.31:2375");
+			DOCKER_HOST_URI = new URI("http://127.0.0.1:2375");
 		} catch (URISyntaxException e) {
 			throw new IllegalStateException(e);
 		}
@@ -59,6 +61,16 @@ public class DefaultDockerClientTest {
 		request.setImage("busybox");
 
 		ContainerCreateResponse response = dockerClient.containerCreate(request);
+		assertNotNull(response);
+	}
+
+	@Test
+	public void testContainerInspect() throws Exception {
+		ContainerInspectRequest request = new ContainerInspectRequest();
+		request.setId("hans");
+		request.setSize(true);
+
+		ContainerInspectResponse response = dockerClient.containerInspect(request);
 		assertNotNull(response);
 	}
 

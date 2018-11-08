@@ -16,5 +16,11 @@ public interface DockerClient {
 	ContainerCreateResponse containerCreate(ContainerCreateRequest request) throws BadParameterException,
 			NoSuchContainerException, ImpossibleToAttachException, ConflictException, ServerErrorException, IOException;
 
+	/**
+	 * Return low-level information about a container
+	 */
+	ContainerInspectResponse containerInspect(ContainerInspectRequest request)
+			throws NoSuchContainerException, ServerErrorException, IOException;
+
 	SystemVersionResponse systemVersion() throws ServerErrorException, IOException;
 }

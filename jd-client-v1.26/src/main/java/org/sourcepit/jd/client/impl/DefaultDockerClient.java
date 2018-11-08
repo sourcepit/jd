@@ -18,10 +18,13 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
 import org.sourcepit.jd.client.ContainerCreateRequest;
 import org.sourcepit.jd.client.ContainerCreateResponse;
+import org.sourcepit.jd.client.ContainerInspectRequest;
+import org.sourcepit.jd.client.ContainerInspectResponse;
 import org.sourcepit.jd.client.ContainerListRequest;
 import org.sourcepit.jd.client.ContainerListResponse;
 import org.sourcepit.jd.client.DockerClient;
 import org.sourcepit.jd.client.SystemVersionResponse;
+import org.sourcepit.jd.client.core.annotation.PathParameter;
 import org.sourcepit.jd.client.core.annotation.QueryParameter;
 import org.sourcepit.jd.client.error.BadParameterException;
 import org.sourcepit.jd.client.error.ConflictException;
@@ -42,6 +45,8 @@ public class DefaultDockerClient implements DockerClient {
 	private static final String[] PATH_CONTAINER_LIST = { "containers", "json" };
 
 	private static final String[] PATH_CONTAINER_CREATE = { "containers", "create" };
+
+	private static final String[] PATH_CONTAINER_INSPECT = { "containers", "{id}", "json" };
 
 	private static final String[] PATH_SYSTEM_VERSION = { "version" };
 
@@ -68,7 +73,7 @@ public class DefaultDockerClient implements DockerClient {
 		final Map<String, String> queryParams = new LinkedHashMap<>();
 		collectQueryParameters(request, queryParams);
 
-		final HttpGet httpRequest = new HttpGet(genUri(PATH_CONTAINER_LIST, queryParams));
+		final HttpGet httpRequest = new HttpGet(genUri(PATH_CONTAINER_LIST, null, queryParams));
 		final Class<ContainerListResponse> responseType = ContainerListResponse.class;
 		final ErrorResponseHandler errorHandler = new ErrorResponseHandler() {
 			@Override
@@ -94,7 +99,7 @@ public class DefaultDockerClient implements DockerClient {
 		final Map<String, String> queryParams = new LinkedHashMap<>();
 		collectQueryParameters(request, queryParams);
 
-		final URI uri = genUri(PATH_CONTAINER_CREATE, queryParams);
+		final URI uri = genUri(PATH_CONTAINER_CREATE, null, queryParams);
 
 		final byte[] bytes;
 		try {
@@ -116,8 +121,36 @@ public class DefaultDockerClient implements DockerClient {
 	}
 
 	@Override
+	public ContainerInspectResponse containerInspect(ContainerInspectRequest request)
+			throws NoSuchContainerException, ServerErrorException, IOException {
+		final Map<String, String> pathParams = new LinkedHashMap<>();
+		collectPathParameters(request, pathParams);
+
+		final Map<String, String> queryParams = new LinkedHashMap<>();
+		collectQueryParameters(request, queryParams);
+
+		final HttpGet httpRequest = new HttpGet(genUri(PATH_CONTAINER_INSPECT, pathParams, queryParams));
+		final Class<ContainerInspectResponse> responseType = ContainerInspectResponse.class;
+		final ErrorResponseHandler errorHandler = new ErrorResponseHandler() {
+			@Override
+			public void handleErrorResponse(int statusCode, ErrorResponse errorResponse)
+					throws ClientProtocolException, IOException {
+				switch (statusCode) {
+				case 404:
+					throw new NoSuchContainerException(errorResponse);
+				case 500:
+					throw new ServerErrorException(errorResponse);
+				default:
+					break;
+				}
+			}
+		};
+		return httpClient.execute(httpRequest, new JdResponseHandler<>(objectMapper, responseType, errorHandler));
+	}
+
+	@Override
 	public SystemVersionResponse systemVersion() throws ServerErrorException, IOException {
-		final HttpGet request = new HttpGet(genUri(PATH_SYSTEM_VERSION, null));
+		final HttpGet request = new HttpGet(genUri(PATH_SYSTEM_VERSION, null, null));
 		final Class<SystemVersionResponse> responseType = SystemVersionResponse.class;
 		final ErrorResponseHandler errorHandler = new ErrorResponseHandler() {
 			@Override
@@ -131,9 +164,9 @@ public class DefaultDockerClient implements DockerClient {
 		return httpClient.execute(request, new JdResponseHandler<>(objectMapper, responseType, errorHandler));
 	}
 
-	private URI genUri(String[] segments, Map<String, String> queryParams) {
+	private URI genUri(String[] segments, Map<String, String> pathParams, Map<String, String> queryParams) {
 		final URIBuilder uriBuilder = new URIBuilder(dockerHostUri);
-		uriBuilder.setPath(genPath(segments));
+		uriBuilder.setPath(genPath(segments, pathParams));
 
 		if (queryParams != null && !queryParams.isEmpty()) {
 			for (Entry<String, String> entry : queryParams.entrySet()) {
@@ -152,17 +185,39 @@ public class DefaultDockerClient implements DockerClient {
 		}
 	}
 
-	private static String genPath(String[] segments) {
+	private static String genPath(String[] segments, Map<String, String> pathParams) {
 		final StringBuilder pathBuilder = new StringBuilder();
 		pathBuilder.append('/');
 		pathBuilder.append(API_VERSION);
 
 		for (String segment : segments) {
 			pathBuilder.append('/');
-			pathBuilder.append(segment);
+			final String replacement = pathParams == null ? null : pathParams.get(segment);
+			pathBuilder.append(replacement == null ? segment : replacement);
 		}
 
 		return pathBuilder.toString();
+	}
+
+	private static void collectPathParameters(Object bean, Map<String, String> params) {
+		Class<?> c = bean.getClass();
+		while (c != null) {
+			for (Field field : c.getDeclaredFields()) {
+				if (field.isAnnotationPresent(PathParameter.class)) {
+					final String paramName = "{" + field.getName() + "}";
+					if (!params.containsKey(paramName)) {
+						final Object fieldValue = getFieldValue(field, bean);
+						if (fieldValue == null) {
+							params.put(paramName, null);
+						} else {
+							params.put(paramName, toString(fieldValue));
+
+						}
+					}
+				}
+			}
+			c = c.getSuperclass();
+		}
 	}
 
 	private static void collectQueryParameters(Object bean, Map<String, String> params) {
