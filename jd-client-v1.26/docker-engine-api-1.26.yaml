@@ -15,10 +15,8 @@ schemes:
   - "https"
 produces:
   - "application/json"
-  - "text/plain"
 consumes:
   - "application/json"
-  - "text/plain"
 basePath: "/v1.26"
 info:
   title: "Docker Engine API"
@@ -3351,6 +3349,7 @@ paths:
       operationId: "ContainerExport"
       produces:
         - "application/octet-stream"
+        - "application/json"
       responses:
         200:
           description: "no error"
@@ -3509,6 +3508,7 @@ paths:
         - "application/octet-stream"
       produces:
         - "text/plain"
+        - "application/json"
       responses:
         200:
           description: "no error"
@@ -3897,6 +3897,7 @@ paths:
       operationId: "ContainerAttach"
       produces:
         - "application/vnd.docker.raw-stream"
+        - "application/json"
       responses:
         101:
           description: "no error, hints proxy about hijacking"
@@ -4156,6 +4157,7 @@ paths:
       operationId: "ContainerGetArchive"
       produces:
         - "application/x-tar"
+        - "application/json"
       responses:
         200:
           description: "no error"
