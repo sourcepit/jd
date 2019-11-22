@@ -17,7 +17,8 @@ import org.sourcepit.jd.client.ContainerInspectResponse;
 import org.sourcepit.jd.client.ContainerListRequest;
 import org.sourcepit.jd.client.ContainerListResponse;
 import org.sourcepit.jd.client.DockerClient;
-import org.sourcepit.jd.client.SystemVersionResponse;
+import org.sourcepit.jd.client.DockerClientImpl;
+import org.sourcepit.jd.client.SystemVersionOkResponse;
 
 public class DefaultDockerClientTest {
 	private final static URI DOCKER_HOST_URI;
@@ -36,7 +37,7 @@ public class DefaultDockerClientTest {
 	@Before
 	public void setUp() {
 		httpClient = HttpClients.createDefault();
-		dockerClient = new DefaultDockerClient(httpClient, DOCKER_HOST_URI);
+		dockerClient = new DockerClientImpl(httpClient, DOCKER_HOST_URI);
 	}
 
 	@After
@@ -45,10 +46,17 @@ public class DefaultDockerClientTest {
 	}
 
 	@Test
+	public void testSystemVersion() throws Exception {
+		SystemVersionOkResponse response = dockerClient.systemVersion().unwrap();
+		assertNotNull(response.getApiVersion());
+		assertNotNull(response.getVersion());
+	}
+
+	@Test
 	public void testContainerList() throws Exception {
 		ContainerListRequest request = new ContainerListRequest();
 		request.setAll(true);
-		request.setLimit(10);
+		request.setLimit(Long.valueOf(10));
 
 		ContainerListResponse response = dockerClient.containerList(request);
 		assertNotNull(response);
@@ -73,11 +81,4 @@ public class DefaultDockerClientTest {
 		ContainerInspectResponse response = dockerClient.containerInspect(request);
 		assertNotNull(response);
 	}
-
-	@Test
-	public void test() throws Exception {
-		SystemVersionResponse response = dockerClient.systemVersion();
-		assertNotNull(response);
-	}
-
 }

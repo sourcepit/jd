@@ -9,5 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface PathParameter {
+	String value() default "";
 
+	String defaultValue() default "";
 }
