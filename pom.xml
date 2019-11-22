@@ -27,6 +27,7 @@
 	<modules>
 		<module>jd-client-core</module>
 		<module>jd-client-v1.26</module>
+		<module>jd-client-v1.40</module>
 	</modules>
 
 	<dependencies>
