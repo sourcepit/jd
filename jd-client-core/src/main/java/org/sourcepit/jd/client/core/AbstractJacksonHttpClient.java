@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -18,13 +20,16 @@ import org.apache.http.client.methods.HttpOptions;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.sourcepit.jd.client.core.annotation.HeaderParameter;
 import org.sourcepit.jd.client.core.annotation.PathParameter;
 import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,7 +76,7 @@ public class AbstractJacksonHttpClient {
 			uri = genUri(path, pathParams, queryParams);
 		}
 
-		final HttpRequestBase httpRequest;
+		final HttpUriRequest httpRequest;
 		switch (method) {
 		case DELETE:
 			httpRequest = new HttpDelete(uri);
@@ -106,6 +111,12 @@ public class AbstractJacksonHttpClient {
 			collectHeaderParameters(request, headerParams);
 			for (Entry<String, String> entry : headerParams.entrySet()) {
 				httpRequest.addHeader(entry.getKey(), entry.getValue());
+			}
+
+			if (hasJsonProperty(request)) {
+				final byte[] bytes = objectMapper.writeValueAsBytes(request);
+				final HttpEntity httpEntity = new ByteArrayEntity(bytes, ContentType.APPLICATION_JSON);
+				((HttpEntityEnclosingRequest) httpRequest).setEntity(httpEntity);
 			}
 		}
 
@@ -194,6 +205,19 @@ public class AbstractJacksonHttpClient {
 			}
 			c = c.getSuperclass();
 		}
+	}
+
+	private static boolean hasJsonProperty(Object bean) {
+		Class<?> c = bean.getClass();
+		while (c != null) {
+			for (Field field : c.getDeclaredFields()) {
+				if (field.isAnnotationPresent(JsonProperty.class)) {
+					return true;
+				}
+			}
+			c = c.getSuperclass();
+		}
+		return false;
 	}
 
 	private static String toString(Object value) {

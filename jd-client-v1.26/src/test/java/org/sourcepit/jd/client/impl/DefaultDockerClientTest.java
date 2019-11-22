@@ -10,8 +10,8 @@ import org.apache.http.impl.client.HttpClients;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.sourcepit.jd.client.ContainerCreateCreatedResponse;
 import org.sourcepit.jd.client.ContainerCreateRequest;
-import org.sourcepit.jd.client.ContainerCreateResponse;
 import org.sourcepit.jd.client.ContainerInspectRequest;
 import org.sourcepit.jd.client.ContainerInspectResponse;
 import org.sourcepit.jd.client.ContainerListRequest;
@@ -65,10 +65,9 @@ public class DefaultDockerClientTest {
 	@Test
 	public void testContainerCreate() throws Exception {
 		ContainerCreateRequest request = new ContainerCreateRequest();
-		request.setName("hans");
-		request.setImage("busybox");
+		request.setImage("mongo:3.6");
 
-		ContainerCreateResponse response = dockerClient.containerCreate(request);
+		ContainerCreateCreatedResponse response = dockerClient.containerCreate(request).unwrap();
 		assertNotNull(response);
 	}
 
