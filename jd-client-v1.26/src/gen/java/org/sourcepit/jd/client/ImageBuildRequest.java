@@ -1,7 +1,7 @@
 package org.sourcepit.jd.client;
 
 import org.sourcepit.jd.client.core.annotation.HeaderParameter;
-import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -33,83 +33,83 @@ public class ImageBuildRequest {
 	private ContentType contentType;
 
 	@JsonIgnore
-	@PathParameter("networkmode")
+	@QueryParameter("networkmode")
 	private String networkmode;
 
 	@JsonIgnore
-	@PathParameter("labels")
+	@QueryParameter("labels")
 	private String labels;
 
 	@JsonIgnore
-	@PathParameter("squash")
+	@QueryParameter("squash")
 	private Boolean squash;
 
 	@JsonIgnore
-	@PathParameter("shmsize")
+	@QueryParameter("shmsize")
 	private Long shmsize;
 
 	@JsonIgnore
-	@PathParameter("buildargs")
+	@QueryParameter("buildargs")
 	private Long buildargs;
 
 	@JsonIgnore
-	@PathParameter("cpuquota")
+	@QueryParameter("cpuquota")
 	private Long cpuquota;
 
 	@JsonIgnore
-	@PathParameter("cpuperiod")
+	@QueryParameter("cpuperiod")
 	private Long cpuperiod;
 
 	@JsonIgnore
-	@PathParameter("cpusetcpus")
+	@QueryParameter("cpusetcpus")
 	private String cpusetcpus;
 
 	@JsonIgnore
-	@PathParameter("cpushares")
+	@QueryParameter("cpushares")
 	private Long cpushares;
 
 	@JsonIgnore
-	@PathParameter("memswap")
+	@QueryParameter("memswap")
 	private Long memswap;
 
 	@JsonIgnore
-	@PathParameter("memory")
+	@QueryParameter("memory")
 	private Long memory;
 
 	@JsonIgnore
-	@PathParameter(value = "forcerm", defaultValue = "false")
+	@QueryParameter(value = "forcerm", defaultValue = "false")
 	private Boolean forcerm;
 
 	@JsonIgnore
-	@PathParameter(value = "rm", defaultValue = "true")
+	@QueryParameter(value = "rm", defaultValue = "true")
 	private Boolean rm;
 
 	@JsonIgnore
-	@PathParameter("pull")
+	@QueryParameter("pull")
 	private String pull;
 
 	@JsonIgnore
-	@PathParameter("cachefrom")
+	@QueryParameter("cachefrom")
 	private String cachefrom;
 
 	@JsonIgnore
-	@PathParameter(value = "nocache", defaultValue = "false")
+	@QueryParameter(value = "nocache", defaultValue = "false")
 	private Boolean nocache;
 
 	@JsonIgnore
-	@PathParameter(value = "q", defaultValue = "false")
+	@QueryParameter(value = "q", defaultValue = "false")
 	private Boolean q;
 
 	@JsonIgnore
-	@PathParameter("remote")
+	@QueryParameter("remote")
 	private String remote;
 
 	@JsonIgnore
-	@PathParameter("t")
+	@QueryParameter("t")
 	private String t;
 
 	@JsonIgnore
-	@PathParameter(value = "dockerfile", defaultValue = "Dockerfile")
+	@QueryParameter(value = "dockerfile", defaultValue = "Dockerfile")
 	private String dockerfile;
 
 }

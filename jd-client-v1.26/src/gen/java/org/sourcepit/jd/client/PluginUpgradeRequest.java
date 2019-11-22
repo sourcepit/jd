@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.sourcepit.jd.client.core.annotation.HeaderParameter;
 import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,7 +24,7 @@ public class PluginUpgradeRequest extends ArrayList<PluginUpgradeRequestItem> {
 	private String xRegistryAuth;
 
 	@JsonIgnore
-	@PathParameter("remote")
+	@QueryParameter("remote")
 	private String remote;
 
 	@JsonIgnore

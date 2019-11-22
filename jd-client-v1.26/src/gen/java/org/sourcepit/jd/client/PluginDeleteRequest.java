@@ -1,6 +1,7 @@
 package org.sourcepit.jd.client;
 
 import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -12,7 +13,7 @@ import lombok.Data;
 @JsonInclude(Include.NON_NULL)
 public class PluginDeleteRequest {
 	@JsonIgnore
-	@PathParameter(value = "force", defaultValue = "false")
+	@QueryParameter(value = "force", defaultValue = "false")
 	private Boolean force;
 
 	@JsonIgnore

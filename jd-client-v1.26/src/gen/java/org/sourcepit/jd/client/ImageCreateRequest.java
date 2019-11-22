@@ -1,7 +1,7 @@
 package org.sourcepit.jd.client;
 
 import org.sourcepit.jd.client.core.annotation.HeaderParameter;
-import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,19 +17,19 @@ public class ImageCreateRequest {
 	private String xRegistryAuth;
 
 	@JsonIgnore
-	@PathParameter("tag")
+	@QueryParameter("tag")
 	private String tag;
 
 	@JsonIgnore
-	@PathParameter("repo")
+	@QueryParameter("repo")
 	private String repo;
 
 	@JsonIgnore
-	@PathParameter("fromSrc")
+	@QueryParameter("fromSrc")
 	private String fromSrc;
 
 	@JsonIgnore
-	@PathParameter("fromImage")
+	@QueryParameter("fromImage")
 	private String fromImage;
 
 }

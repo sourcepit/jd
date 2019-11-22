@@ -1,6 +1,6 @@
 package org.sourcepit.jd.client;
 
-import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,19 +14,19 @@ import lombok.EqualsAndHashCode;
 @JsonInclude(Include.NON_NULL)
 public class SwarmUpdateRequest extends SwarmSpec {
 	@JsonIgnore
-	@PathParameter(value = "rotateManagerUnlockKey", defaultValue = "false")
+	@QueryParameter(value = "rotateManagerUnlockKey", defaultValue = "false")
 	private Boolean rotateManagerUnlockKey;
 
 	@JsonIgnore
-	@PathParameter(value = "rotateManagerToken", defaultValue = "false")
+	@QueryParameter(value = "rotateManagerToken", defaultValue = "false")
 	private Boolean rotateManagerToken;
 
 	@JsonIgnore
-	@PathParameter(value = "rotateWorkerToken", defaultValue = "false")
+	@QueryParameter(value = "rotateWorkerToken", defaultValue = "false")
 	private Boolean rotateWorkerToken;
 
 	@JsonIgnore
-	@PathParameter("version")
+	@QueryParameter("version")
 	private Long version;
 
 }

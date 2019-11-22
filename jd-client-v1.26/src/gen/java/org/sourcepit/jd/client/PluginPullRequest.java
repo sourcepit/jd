@@ -3,7 +3,7 @@ package org.sourcepit.jd.client;
 import java.util.ArrayList;
 
 import org.sourcepit.jd.client.core.annotation.HeaderParameter;
-import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -23,11 +23,11 @@ public class PluginPullRequest extends ArrayList<PluginPullRequestItem> {
 	private String xRegistryAuth;
 
 	@JsonIgnore
-	@PathParameter("name")
+	@QueryParameter("name")
 	private String name;
 
 	@JsonIgnore
-	@PathParameter("remote")
+	@QueryParameter("remote")
 	private String remote;
 
 }

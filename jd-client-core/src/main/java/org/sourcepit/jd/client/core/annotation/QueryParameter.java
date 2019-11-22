@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 @Target(FIELD)
 public @interface QueryParameter {
-	String value();
+	String value() default "";
 
-	String defaultValue();
+	String defaultValue() default "";
 }

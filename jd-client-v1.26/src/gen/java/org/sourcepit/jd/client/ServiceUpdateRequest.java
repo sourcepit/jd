@@ -2,6 +2,7 @@ package org.sourcepit.jd.client;
 
 import org.sourcepit.jd.client.core.annotation.HeaderParameter;
 import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -19,11 +20,11 @@ public class ServiceUpdateRequest extends ServiceSpec {
 	private String xRegistryAuth;
 
 	@JsonIgnore
-	@PathParameter(value = "registryAuthFrom", defaultValue = "spec")
+	@QueryParameter(value = "registryAuthFrom", defaultValue = "spec")
 	private String registryAuthFrom;
 
 	@JsonIgnore
-	@PathParameter("version")
+	@QueryParameter("version")
 	private Long version;
 
 	@JsonIgnore

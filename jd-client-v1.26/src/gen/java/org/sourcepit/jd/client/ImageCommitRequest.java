@@ -1,6 +1,6 @@
 package org.sourcepit.jd.client;
 
-import org.sourcepit.jd.client.core.annotation.PathParameter;
+import org.sourcepit.jd.client.core.annotation.QueryParameter;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -14,31 +14,31 @@ import lombok.EqualsAndHashCode;
 @JsonInclude(Include.NON_NULL)
 public class ImageCommitRequest extends Config {
 	@JsonIgnore
-	@PathParameter("changes")
+	@QueryParameter("changes")
 	private String changes;
 
 	@JsonIgnore
-	@PathParameter(value = "pause", defaultValue = "true")
+	@QueryParameter(value = "pause", defaultValue = "true")
 	private Boolean pause;
 
 	@JsonIgnore
-	@PathParameter("author")
+	@QueryParameter("author")
 	private String author;
 
 	@JsonIgnore
-	@PathParameter("comment")
+	@QueryParameter("comment")
 	private String comment;
 
 	@JsonIgnore
-	@PathParameter("tag")
+	@QueryParameter("tag")
 	private String tag;
 
 	@JsonIgnore
-	@PathParameter("repo")
+	@QueryParameter("repo")
 	private String repo;
 
 	@JsonIgnore
-	@PathParameter("container")
+	@QueryParameter("container")
 	private String container;
 
 }
