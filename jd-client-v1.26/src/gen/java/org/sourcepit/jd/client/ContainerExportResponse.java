@@ -2,12 +2,12 @@ package org.sourcepit.jd.client;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.util.EntityUtils;
-import org.sourcepit.jd.client.core.OkException;
 import org.sourcepit.jd.client.core.ResponseValue;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -16,8 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ContainerExportResponse implements Closeable {
 	public static interface Matcher<T> {
-		default T caseOk() throws IOException {
-			throw new OkException();
+		default T caseOk(ResponseValue<InputStream> responseValue)
+				throws IOException, JsonParseException, JsonMappingException, OkBinaryException {
+			throw new OkBinaryException(responseValue.get());
 		}
 
 		default T caseNotFound(ResponseValue<ErrorResponse> responseValue)
@@ -46,12 +47,12 @@ public class ContainerExportResponse implements Closeable {
 		this.httpResponse = httpResponse;
 	}
 
-	public <T> T match(Matcher<T> matcher) throws IOException, JsonParseException, JsonMappingException, OkException,
-			NotFoundErrorResponseException, InternalServerErrorErrorResponseException {
+	public <T> T match(Matcher<T> matcher) throws IOException, JsonParseException, JsonMappingException,
+			OkBinaryException, NotFoundErrorResponseException, InternalServerErrorErrorResponseException {
 		T value;
 		switch (httpResponse.getStatusLine().getStatusCode()) {
 		case 200: {
-			value = matcher.caseOk();
+			value = matcher.caseOk(new ResponseValue<>(objectMapper, InputStream.class, httpResponse));
 			break;
 		}
 		case 404: {
@@ -73,12 +74,13 @@ public class ContainerExportResponse implements Closeable {
 		return value;
 	}
 
-	public void unwrap() throws IOException, JsonParseException, JsonMappingException, NotFoundErrorResponseException,
-			InternalServerErrorErrorResponseException {
-		match(new Matcher<Object>() {
+	public InputStream unwrap() throws IOException, JsonParseException, JsonMappingException,
+			NotFoundErrorResponseException, InternalServerErrorErrorResponseException {
+		return match(new Matcher<InputStream>() {
 			@Override
-			public Object caseOk() {
-				return new Object();
+			public InputStream caseOk(ResponseValue<InputStream> responseValue)
+					throws IOException, JsonParseException, JsonMappingException {
+				return responseValue.get();
 			}
 		});
 	}

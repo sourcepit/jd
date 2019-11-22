@@ -3234,6 +3234,7 @@ paths:
           description: "logs returned as a string in response body"
           schema:
             type: "string"
+            format: "binary"
         404:
           description: "no such container"
           schema:
@@ -3352,6 +3353,9 @@ paths:
       responses:
         200:
           description: "no error"
+          schema:
+            type: "string"
+            format: "binary"
         404:
           description: "no such container"
           schema:
@@ -7032,6 +7036,7 @@ paths:
           schema:
             description: "The node ID"
             type: "string"
+            format: "binary"
             example: "7v2t30z9blmxuhnyo6s4cpenp"
         400:
           description: "bad parameter"
@@ -7539,6 +7544,7 @@ paths:
           description: "logs returned as a string in response body"
           schema:
             type: "string"
+            format: "binary"
         404:
           description: "no such container"
           schema:

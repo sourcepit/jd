@@ -21,9 +21,9 @@ public class ContainerLogsResponse implements Closeable {
 			throw new SwitchingProtocolsBinaryException(responseValue.get());
 		}
 
-		default T caseOk(ResponseValue<String> responseValue)
-				throws IOException, JsonParseException, JsonMappingException, OkPluginSetRequestItemException {
-			throw new OkPluginSetRequestItemException(responseValue.get());
+		default T caseOk(ResponseValue<InputStream> responseValue)
+				throws IOException, JsonParseException, JsonMappingException, OkBinaryException {
+			throw new OkBinaryException(responseValue.get());
 		}
 
 		default T caseNotFound(ResponseValue<ErrorResponse> responseValue)
@@ -54,7 +54,7 @@ public class ContainerLogsResponse implements Closeable {
 
 	public <T> T match(Matcher<T> matcher)
 			throws IOException, JsonParseException, JsonMappingException, SwitchingProtocolsBinaryException,
-			OkPluginSetRequestItemException, NotFoundErrorResponseException, InternalServerErrorErrorResponseException {
+			OkBinaryException, NotFoundErrorResponseException, InternalServerErrorErrorResponseException {
 		T value;
 		switch (httpResponse.getStatusLine().getStatusCode()) {
 		case 101: {
@@ -62,7 +62,7 @@ public class ContainerLogsResponse implements Closeable {
 			break;
 		}
 		case 200: {
-			value = matcher.caseOk(new ResponseValue<>(objectMapper, String.class, httpResponse));
+			value = matcher.caseOk(new ResponseValue<>(objectMapper, InputStream.class, httpResponse));
 			break;
 		}
 		case 404: {
@@ -84,12 +84,12 @@ public class ContainerLogsResponse implements Closeable {
 		return value;
 	}
 
-	public String unwrap()
+	public InputStream unwrap()
 			throws IOException, JsonParseException, JsonMappingException, SwitchingProtocolsBinaryException,
 			NotFoundErrorResponseException, InternalServerErrorErrorResponseException {
-		return match(new Matcher<String>() {
+		return match(new Matcher<InputStream>() {
 			@Override
-			public String caseOk(ResponseValue<String> responseValue)
+			public InputStream caseOk(ResponseValue<InputStream> responseValue)
 					throws IOException, JsonParseException, JsonMappingException {
 				return responseValue.get();
 			}

@@ -2,6 +2,7 @@ package org.sourcepit.jd.client;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class SwarmInitResponse implements Closeable {
 	public static interface Matcher<T> {
-		default T caseOk(ResponseValue<String> responseValue)
-				throws IOException, JsonParseException, JsonMappingException, OkPluginSetRequestItemException {
-			throw new OkPluginSetRequestItemException(responseValue.get());
+		default T caseOk(ResponseValue<InputStream> responseValue)
+				throws IOException, JsonParseException, JsonMappingException, OkBinaryException {
+			throw new OkBinaryException(responseValue.get());
 		}
 
 		default T caseBadRequest(ResponseValue<ErrorResponse> responseValue)
@@ -52,12 +53,12 @@ public class SwarmInitResponse implements Closeable {
 	}
 
 	public <T> T match(Matcher<T> matcher) throws IOException, JsonParseException, JsonMappingException,
-			OkPluginSetRequestItemException, BadRequestErrorResponseException,
-			InternalServerErrorErrorResponseException, ServiceUnavailableErrorResponseException {
+			OkBinaryException, BadRequestErrorResponseException, InternalServerErrorErrorResponseException,
+			ServiceUnavailableErrorResponseException {
 		T value;
 		switch (httpResponse.getStatusLine().getStatusCode()) {
 		case 200: {
-			value = matcher.caseOk(new ResponseValue<>(objectMapper, String.class, httpResponse));
+			value = matcher.caseOk(new ResponseValue<>(objectMapper, InputStream.class, httpResponse));
 			break;
 		}
 		case 400: {
@@ -84,12 +85,12 @@ public class SwarmInitResponse implements Closeable {
 		return value;
 	}
 
-	public String unwrap()
+	public InputStream unwrap()
 			throws IOException, JsonParseException, JsonMappingException, BadRequestErrorResponseException,
 			InternalServerErrorErrorResponseException, ServiceUnavailableErrorResponseException {
-		return match(new Matcher<String>() {
+		return match(new Matcher<InputStream>() {
 			@Override
-			public String caseOk(ResponseValue<String> responseValue)
+			public InputStream caseOk(ResponseValue<InputStream> responseValue)
 					throws IOException, JsonParseException, JsonMappingException {
 				return responseValue.get();
 			}

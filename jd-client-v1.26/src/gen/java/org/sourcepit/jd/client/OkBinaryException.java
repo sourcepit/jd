@@ -1,16 +1,18 @@
 package org.sourcepit.jd.client;
 
+import java.io.InputStream;
+
 import org.sourcepit.jd.client.core.OkException;
 
 import lombok.Getter;
 
-public class OkPluginSetRequestItemException extends OkException {
+public class OkBinaryException extends OkException {
 	private static final long serialVersionUID = 1L;
 
 	@Getter
-	private final String responseValue;
+	private final InputStream responseValue;
 
-	public OkPluginSetRequestItemException(String responseValue) {
+	public OkBinaryException(InputStream responseValue) {
 		this.responseValue = responseValue;
 	}
 }
