@@ -18,6 +18,12 @@
 		<maven.javadoc.skip>true</maven.javadoc.skip>
 	</properties>
 
+
+	<scm>
+		<connection>scm:git:git@github.com:sourcepit/jd.git</connection>
+		<url>https://github.com/sourcepit/jd</url>
+	</scm>
+
 	<modules>
 		<module>jd-client-core</module>
 		<module>jd-client-v1.26</module>
@@ -84,5 +90,16 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>srcpit-releases</id>
+			<url>https://nexus.sourcepit.org/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<id>srcpit-snapshots</id>
+			<url>https://nexus.sourcepit.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
