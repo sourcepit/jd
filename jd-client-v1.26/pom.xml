@@ -16,11 +16,6 @@
 			<artifactId>jd-client-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>de.gesellix</groupId>
-			<artifactId>unix-socket-factory</artifactId>
-			<version>2016-04-06T22-21-19</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
