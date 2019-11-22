@@ -64,10 +64,10 @@ public class ExecResizeResponse implements Closeable {
 	}
 
 	public void unwrap() throws IOException, JsonParseException, JsonMappingException, NotFoundErrorResponseException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseCreated() {
-				return null;
+			public Object caseCreated() {
+				return new Object();
 			}
 		});
 	}

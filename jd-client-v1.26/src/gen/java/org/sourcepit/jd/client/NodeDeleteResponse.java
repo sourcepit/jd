@@ -86,10 +86,10 @@ public class NodeDeleteResponse implements Closeable {
 
 	public void unwrap() throws IOException, JsonParseException, JsonMappingException, NotFoundErrorResponseException,
 			InternalServerErrorErrorResponseException, ServiceUnavailableErrorResponseException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseOk() {
-				return null;
+			public Object caseOk() {
+				return new Object();
 			}
 		});
 	}

@@ -94,10 +94,10 @@ public class ImageTagResponse implements Closeable {
 
 	public void unwrap() throws IOException, JsonParseException, JsonMappingException, BadRequestErrorResponseException,
 			NotFoundErrorResponseException, ConflictErrorResponseException, InternalServerErrorErrorResponseException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseCreated() {
-				return null;
+			public Object caseCreated() {
+				return new Object();
 			}
 		});
 	}

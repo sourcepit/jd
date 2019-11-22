@@ -75,10 +75,10 @@ public class NetworkDeleteResponse implements Closeable {
 
 	public void unwrap() throws IOException, JsonParseException, JsonMappingException, NotFoundErrorResponseException,
 			InternalServerErrorErrorResponseException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseNoContent() {
-				return null;
+			public Object caseNoContent() {
+				return new Object();
 			}
 		});
 	}

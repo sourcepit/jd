@@ -74,10 +74,10 @@ public class ExecStartResponse implements Closeable {
 
 	public void unwrap()
 			throws IOException, JsonParseException, JsonMappingException, NotFoundException, ConflictException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseOk() {
-				return null;
+			public Object caseOk() {
+				return new Object();
 			}
 		});
 	}

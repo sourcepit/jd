@@ -87,10 +87,10 @@ public class ContainerGetArchiveResponse implements Closeable {
 	public void unwrap() throws IOException, JsonParseException, JsonMappingException,
 			BadRequestContainerGetArchiveBadRequestResponseException, NotFoundErrorResponseException,
 			InternalServerErrorErrorResponseException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseOk() {
-				return null;
+			public Object caseOk() {
+				return new Object();
 			}
 		});
 	}

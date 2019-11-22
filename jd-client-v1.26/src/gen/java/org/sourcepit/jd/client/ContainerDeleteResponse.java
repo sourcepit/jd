@@ -94,10 +94,10 @@ public class ContainerDeleteResponse implements Closeable {
 
 	public void unwrap() throws IOException, JsonParseException, JsonMappingException, BadRequestErrorResponseException,
 			NotFoundErrorResponseException, ConflictErrorResponseException, InternalServerErrorErrorResponseException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseNoContent() {
-				return null;
+			public Object caseNoContent() {
+				return new Object();
 			}
 		});
 	}

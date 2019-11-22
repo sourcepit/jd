@@ -76,10 +76,10 @@ public class SwarmLeaveResponse implements Closeable {
 
 	public void unwrap() throws IOException, JsonParseException, JsonMappingException,
 			InternalServerErrorErrorResponseException, ServiceUnavailableErrorResponseException {
-		match(new Matcher<Void>() {
+		match(new Matcher<Object>() {
 			@Override
-			public Void caseOk() {
-				return null;
+			public Object caseOk() {
+				return new Object();
 			}
 		});
 	}
